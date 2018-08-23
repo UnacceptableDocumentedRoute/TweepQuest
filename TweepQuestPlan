@@ -1,0 +1,83 @@
+To-Do:
+TweepQuest Authentication Code Error
+
+How to put TweepQuest into GitHub
+
+Battles should stop when waiting for a player's input (As long as the player is not paralyzed, enraged, frozen,
+or confused)
+
+Fix improvement system
+
+Transfer changes like enemies, moves, condition effects, and items when the new versions of Tweep Quest are
+usable
+
+
+
+Have the bot change the description each time we win or lose.
+Skill and Luck are percentages
+Make sure all player moves can also be used by enemies.
+Replace duplicateprevention with DuplicatePrevention()
+Add damage = math.ceil(damage) after every attack
+Make a 'How To Play' guide
+Make a Move Guide
+
+Questions:
+Why can't the 'improve' section use variables like Vitality or Spirit?
+Should I put this on GitHub? How do I remove the auth codes?
+Should attacks really be doing that little damage?
+Is there a more efficient way to process commands for different results? (Around Line 25)
+How do I change the duplicate prevention number in real time?
+How can the players choose the distance they want to move?
+How can the players choose their moves in battle?
+How do I round up numbers to be better presented?
+Should there be an Accuracy mechanic in battles?
+
+Suggestions:
+Quests that give money
+
+Emoji Key:
+⚔ = Physical Damage
+✨ = Magical Damage
+🏥 = Healing
+💪 = Buff
+♿ = Debuff
+🔥 = Fire Element
+⛰️ = Earth Element
+⚡ = Electric Element
+🌿 = Grass Element
+💨 = Wind Element
+🌊 = Water Element
+🌑 = Dark Element
+☀ = Light Element
+
+Errors:
+      File "C:/Users/E6440/PycharmProjects/Projects/newprojects/Include/TweepQuest.py", line 132, in fight
+        enemymove = choice()
+    TypeError: choice() missing 1 required positional argument: 'seq'
+
+    Only when warped by an enemy
+  File "C:\Users\E6440\AppData\Local\Programs\Python\Python37-32\lib\threading.py", line 917, in _bootstrap_inner
+    self.run()
+  File "C:\Users\E6440\AppData\Local\Programs\Python\Python37-32\lib\threading.py", line 865, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\E6440\PycharmProjects\Projects\newprojects\lib\site-packages\tweepy\streaming.py", line 297, in _run
+    six.reraise(*exc_info)
+  File "C:\Users\E6440\PycharmProjects\Projects\newprojects\lib\site-packages\six.py", line 693, in reraise
+    raise value
+  File "C:\Users\E6440\PycharmProjects\Projects\newprojects\lib\site-packages\tweepy\streaming.py", line 266, in _run
+    self._read_loop(resp)
+  File "C:\Users\E6440\PycharmProjects\Projects\newprojects\lib\site-packages\tweepy\streaming.py", line 327, in _read_loop
+    self._data(next_status_obj)
+  File "C:\Users\E6440\PycharmProjects\Projects\newprojects\lib\site-packages\tweepy\streaming.py", line 300, in _data
+    if self.listener.on_data(data) is False:
+  File "C:\Users\E6440\PycharmProjects\Projects\newprojects\lib\site-packages\tweepy\streaming.py", line 55, in on_data
+    if self.on_status(status) is False:
+  File "C:/Users/E6440/PycharmProjects/Projects/newprojects/Include/TweepQuest.py", line 518, in on_status
+    self.fight(Vitality, Spirit, Strength, Guard, Agility, Movement, Intellect, Wisdom, Skill, Luck, Moves)
+  File "C:/Users/E6440/PycharmProjects/Projects/newprojects/Include/TweepQuest.py", line 156, in fight
+    nextmove =  randint(1, speed+enemyspeed)
+  File "C:\Users\E6440\AppData\Local\Programs\Python\Python37-32\lib\random.py", line 222, in randint
+    return self.randrange(a, b+1)
+  File "C:\Users\E6440\AppData\Local\Programs\Python\Python37-32\lib\random.py", line 195, in randrange
+    raise ValueError("non-integer stop for randrange()")
+ValueError: non-integer stop for randrange()
