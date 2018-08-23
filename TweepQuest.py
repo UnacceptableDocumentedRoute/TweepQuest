@@ -5,10 +5,12 @@ from random import choice
 from time import sleep
 import math
 
-consumer_key = "yEh2svz0Z6fRqF5qpO5EP3soj"
-consumer_secret = "jmarlMEby5gYSoxQIqcEH2VmBglPwWPuGjN2qtY9oEWUGxoIeu"
-access_token = "1019368723029766145-1qci3gurxErofbogqU0LO4S7nhyuS3"
-access_token_secret = "rnoBEaZvOkNglAXkXGtIeKIBEZiTTJ2uwPsycQjbU3weN"
+fp = open("TweepQuestKeys", "r")
+consumer_key = fp.readline()
+consumer_secret = fp.readline()
+access_token = fp.readline()
+access_token_secret = fp.readline()
+fp.close()
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 auth.secure = True
