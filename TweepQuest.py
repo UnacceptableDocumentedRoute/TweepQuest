@@ -104,14 +104,6 @@ class MyStreamListener(tweepy.StreamListener):
 
     def define_fight(self):
         self.battling = 1
-        playerchoice = 100
-        if self.heroX == goalX and self.heroY == goalY:
-            enemy = choice(self.bosslist)
-            Display(self.heroname + " challenged the final boss: " + self.enemyname + "!")
-        else:
-            enemy = choice(self.enemylist)
-            Display(self.heroname + " encountered an enemy: " + self.enemyname + "!!")
-
         # Enemy Stat Initialization
         enemyname = self.enemy[0]
         enemyhealth = self.enemy[1] * 10
@@ -142,25 +134,34 @@ class MyStreamListener(tweepy.StreamListener):
         enemyrage = 0
         enemyboint = 0
 
+        if self.heroX == goalX and self.heroY == goalY:
+            enemy = choice(self.bosslist)
+            Display(self.heroname + " challenged the final boss: " + enemyname + "!")
+        else:
+            enemy = choice(self.enemylist)
+            Display(self.heroname + " encountered an enemy: " + self.enemyname + "!!")
         sleep(5)
 
-    def fight(self, Vitality, Spirit, Strength, Guard, Agility, Movement, Intellect, Wisdom, Skill, Luck, Moves, Items,
-              Points, status):
+    def isBattling(self):
+        return(self.health > 0 and self.enemyhealth > 0 and self.enemystance != "Fled")
 
-        while health > 0 and enemyhealth > 0 and enemystance != "Fled":
-            magic += Spirit
-            enemymagic += self.enemy[2]
+    def fight(self, Vitality, Spirit, Strength, Guard, Agility, Movement, Intellect, Wisdom, Skill, Luck, Moves, Items,Points, status):
+        playerchoice = 100
 
-            if health > Vitality * 10: health = Vitality * 10
-            if magic > Spirit * 10: magic = Spirit * 10
-            if enemyhealth > self.enemy[1] * 10: enemyhealth = self.enemy[1] * 10
-            if enemymagic > self.enemy[2] * 10: enemymagic = self.enemy[2] * 10
+        if self.isBattling():
+            self.magic += Spirit
+            self.enemymagic += self.enemy[2]
+
+            if self.health > Vitality * 10: self.health = Vitality * 10
+            if self.magic > Spirit * 10: self.magic = Spirit * 10
+            if self.enemyhealth > self.enemy[1] * 10: enemyhealth = self.enemy[1] * 10
+            if self.enemymagic > self.enemy[2] * 10: enemymagic = self.enemy[2] * 10
 
             # Player Condition Effects
             if self.burn > 0:
                 damage = Vitality * 0.05 * self.fire_weakness
                 damage = math.ceil(damage)
-                health -= damage
+                self.health -= damage
                 self.burn -= 1
                 Display(self.heroname + " was hurt by the burn! It did " + str(damage) + " damage.")
 
@@ -642,7 +643,7 @@ class MyStreamListener(tweepy.StreamListener):
             Display("The hero's name shall be " + self.heroname + "!")
 
         # Command outside battle
-        elif self.heroname != "Blank" and self.battling == 0:
+        elif self.heroname != "Blank" and not self.isBattling():
             splitcommand = command.split(" ")
 
             if "improve" in command:
@@ -700,7 +701,7 @@ class MyStreamListener(tweepy.StreamListener):
                 Display(self.heroname + " reached the objective. Congratulations, you won!\nTurns: " + str(turns))
                 sys.exit()
 
-        elif self.heroname != "Blank" and self.battling == 1:
+        elif self.heroname != "Blank" and self.isBattling():
             if "attack" in command: playerchoice = 1
             if "special" in command: playerchoice = 2
             if "item" in command: playerchoice = 3
