@@ -26,7 +26,9 @@ def Display(tweetandprint):
     print(str(tweetandprint + DuplicatePrevention()))
 
 class MyStreamListener(tweepy.StreamListener):
-    
+    #Class Values here
+    def on_status(self, status):
+        #Filler
     
 myStreamListener = MyStreamListener()
 myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)
