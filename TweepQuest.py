@@ -24,6 +24,9 @@ def DuplicatePrevention():
 def Display(tweetandprint):
     status = api.update_status(status=str(tweetandprint + DuplicatePrevention()))
     print(str(tweetandprint + DuplicatePrevention()))
+
+class MyStreamListener(tweepy.StreamListener):
+    
     
 myStreamListener = MyStreamListener()
 myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)
