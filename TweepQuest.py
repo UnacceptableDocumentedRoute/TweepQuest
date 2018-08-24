@@ -24,3 +24,7 @@ def DuplicatePrevention():
 def Display(tweetandprint):
     status = api.update_status(status=str(tweetandprint + DuplicatePrevention()))
     print(str(tweetandprint + DuplicatePrevention()))
+    
+myStreamListener = MyStreamListener()
+myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)
+myStream.filter(track=["#TweepQuest"], newasync=True)
