@@ -6,10 +6,10 @@ from time import sleep
 import math
 
 fp = open("TweepQuestKeys", "r")
-consumer_key = fp.readline()
-consumer_secret = fp.readline()
-access_token = fp.readline()
-access_token_secret = fp.readline()
+consumer_key = fp.readline(1)
+consumer_secret = fp.readline(2)
+access_token = fp.readline(3)
+access_token_secret = fp.readline(4)
 fp.close()
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
