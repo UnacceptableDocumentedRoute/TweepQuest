@@ -28,8 +28,9 @@ def Display(tweetandprint):
 class MyStreamListener(tweepy.StreamListener):
     #Class Values here
     def on_status(self, status):
-        #Filler
-    
+        command = status.body
+        print("Tweet received: " + command)
+
 myStreamListener = MyStreamListener()
 myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)
 myStream.filter(track=["#TweepQuest"], newasync=True)
