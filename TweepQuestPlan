@@ -1,6 +1,8 @@
 To-Do:
 TweepQuest Authentication Code Error
 
+Why can't the Player class work in myStreamListener?
+
 Battles should stop when waiting for a player's input (As long as the player is not paralyzed, enraged, frozen,
 or confused)
 
