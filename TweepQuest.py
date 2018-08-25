@@ -25,12 +25,18 @@ def Display(tweetandprint):
     status = api.update_status(status=str(tweetandprint + DuplicatePrevention()))
     print(str(tweetandprint + DuplicatePrevention()))
 
-#Player Class
 class Player():
     def __init__(self):
         self.x = 0
         self.y = 0
         self.name = "Player"
+        self.health = 100
+        self.attack = 10
+        self.defense = 10
+        self.speed = 10
+
+class Enemy():
+    def __init__(self):
         self.health = 100
         self.attack = 10
         self.defense = 10
