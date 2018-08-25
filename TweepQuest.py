@@ -28,14 +28,20 @@ def Display(tweetandprint):
 #Player Class
 class Player():
     def __init__(self):
+        self.x = 0
+        self.y = 0
+        self.name = "Player"
         self.health = 100
         self.attack = 10
         self.defense = 10
         self.speed = 10
 
+goalX = randint(-100,100)
+goalY = randint(-100,100)
+
 goal_announce = ("\nGoal:" + "(" + str(goalX) + "," + str(goalY) + ")")
 
-Display("[Tweep Quest is currently under development.]\n New adventure starting! What should the hero's name be?\n(Input comes after #TweepQuest.)")
+Display("[Tweep Quest is currently under development.]\n New adventure starting! What should the player's name be?\n(Input comes after #TweepQuest.)")
 
 
 class MyStreamListener(tweepy.StreamListener):
