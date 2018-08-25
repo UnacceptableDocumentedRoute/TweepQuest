@@ -25,6 +25,19 @@ def Display(tweetandprint):
     status = api.update_status(status=str(tweetandprint + DuplicatePrevention()))
     print(str(tweetandprint + DuplicatePrevention()))
 
+#Player Class
+class Player():
+    def __init__(self):
+        self.health = 100
+        self.attack = 10
+        self.defense = 10
+        self.speed = 10
+
+goal_announce = ("\nGoal:" + "(" + str(goalX) + "," + str(goalY) + ")")
+
+Display("[Tweep Quest is currently under development.]\n New adventure starting! What should the hero's name be?\n(Input comes after #TweepQuest.)")
+
+
 class MyStreamListener(tweepy.StreamListener):
     #Class Values here
     def on_status(self, status):
