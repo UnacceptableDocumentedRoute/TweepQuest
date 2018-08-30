@@ -6,10 +6,10 @@ from time import sleep
 import math
 
 fp = open("TweepQuestKeys", "r")
-consumer_key = fp.readline(1)
-consumer_secret = fp.readline(2)
-access_token = fp.readline(3)
-access_token_secret = fp.readline(4)
+consumer_key = fp.readline().strip("\n")
+consumer_secret = fp.readline().strip("\n")
+access_token = fp.readline().strip("\n")
+access_token_secret = fp.readline().strip("\n")
 fp.close()
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -28,14 +28,14 @@ def Display(tweetandprint):
     print(str(tweetandprint + DuplicatePrevention()))
 
 class Player():
-    def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.name = "Player"
-        self.health = 100
-        self.attack = 10
-        self.defense = 10
-        self.speed = 10
+    def __init__(self, name="Player", x=0, y=0, health=100, attack=10, defense=10, speed=10):
+        self.x = x
+        self.y = y
+        self.name = name
+        self.health = health
+        self.attack = attack
+        self.defense = defense
+        self.speed = speed
 
 class Enemy():
     def __init__(self):
@@ -54,41 +54,41 @@ Display("[Tweep Quest is currently under development.]\n New adventure starting!
 
 class MyStreamListener(tweepy.StreamListener):
     #Class Values here
+    myPlayer = Player()
     def on_status(self, status):
         turns =+ 1
         moved = 0
         command = status.text
         print("Recived:\n" + command + "\n")
         #Naming the hero
-        if Player.name == "Player":
-            Player.name = command[12:]
-            if len(Player.name) > 20:
-                Player.name =  Player.name[:20]
+        if self.myPlayer.name == "Player":
+            self.myPlayer.name = command[12:]
+            if len(self.myPlayer.name) > 20:
+                self.myPlayer.name =  self.myPlayer.name[:20]
             #, in_reply_to_status_id = status.id?
-            Display("The hero's name shall be " + Player.name + "!" + goal_announce)
+            Display("The hero's name shall be " + self.myPlayer.name + "!" + goal_announce)
 
         #Command outside battle
-        elif Player.name != "Blank" and battling == 0:
+        elif self.myPlayer.name != "Blank" and battling == 0:
             splitcommand = command.split(" ")
-
             if "improve" in command:
                 amount = 0
                 if splitcommand[4] in splitcommand:
                     amount = splitcommand[4]
         #        else:
         #            amount = Points
-        #        if "Vitality" in command: Vitality += amount, Display(Player.name + " allocated " + str(amount) + " Points into Vitality.")
-        #        if "Spirit" in command: Spirit += amount, Display(Player.name + " allocated " + str(amount) + " Points into Spirit.")
+        #        if "Vitality" in command: Vitality += amount, Display(self.myPlayer.name + " allocated " + str(amount) + " Points into Vitality.")
+        #        if "Spirit" in command: Spirit += amount, Display(self.myPlayer.name + " allocated " + str(amount) + " Points into Spirit.")
         #        Points -= amount
 
             elif splitcommand[2] in splitcommand and type(int(splitcommand[2])) == type(1):
                 steps = int(splitcommand[2])
-                if steps <= Player.speed:
-                    if "right" in splitcommand[1]: Player.x += steps
-                    elif "left" in splitcommand[1]: Player.x -= steps
-                    elif "up" in splitcommand[1]: Player.y += steps
-                    elif "down" in splitcommand[1]: Player.y -= steps
-                    Display(Player.name + " moved right " + str(steps) + " steps.\nCurrent position: (" + str(Player.x) + "," + str(Player.y) + ")")
+                if steps <= self.myPlayer.speed:
+                    if "right" in splitcommand[1]: self.myPlayer.x += steps
+                    elif "left" in splitcommand[1]: self.myPlayer.x -= steps
+                    elif "up" in splitcommand[1]: self.myPlayer.y += steps
+                    elif "down" in splitcommand[1]: self.myPlayer.y -= steps
+                    Display(self.myPlayer.name + " moved right " + str(steps) + " steps.\nCurrent position: (" + str(self.myPlayer.x) + "," + str(Player.y) + ")")
                     moved = 1
                 else:
                     Display("Not enough Movement for that distance!")
@@ -105,10 +105,10 @@ class MyStreamListener(tweepy.StreamListener):
                 self.fight(Vitality, Spirit, Strength, Guard, Agility, Movement, Intellect, Wisdom, Skill, Luck, Moves, Items, Points, status)
 
             if Player.x == goalX and Player.y == goalY:
-                Display(Player.name + " reached the objective. Congratulations, you won!\nTurns: " + str(turns))
+                Display(self.myPlayer.name + " reached the objective. Congratulations, you won!\nTurns: " + str(turns))
                 sys.exit()
 
-        elif Player.name != "Blank" and battling == 1:
+        elif self.myPlayer.name != "Blank" and battling == 1:
             if "attack" in command: playerchoice = 1
             if "special" in command: playerchoice = 2
             if "item" in command: playerchoice = 3
