@@ -1,9 +1,7 @@
 import tweepy
 import sys
 from random import randint
-from random import choice
 from time import sleep
-import math
 
 fp = open("TweepQuestKeys", "r")
 consumer_key = fp.readline().strip("\n")
@@ -88,7 +86,7 @@ class MyStreamListener(tweepy.StreamListener):
                     elif "left" in splitcommand[1]: self.myPlayer.x -= steps
                     elif "up" in splitcommand[1]: self.myPlayer.y += steps
                     elif "down" in splitcommand[1]: self.myPlayer.y -= steps
-                    Display(self.myPlayer.name + " moved right " + str(steps) + " steps.\nCurrent position: (" + str(self.myPlayer.x) + "," + str(Player.y) + ")")
+                    Display(self.myPlayer.name + " moved right " + str(steps) + " steps.\nCurrent position: (" + str(self.myPlayer.x) + "," + str(self.myPlayer.y) + ")")
                     moved = 1
                 else:
                     Display("Not enough Movement for that distance!")
@@ -102,9 +100,9 @@ class MyStreamListener(tweepy.StreamListener):
             #Encountering enemies
             battlechance = 1 #randint(1, 3)
             if battlechance == 1 and moved == 1:
-                self.fight(Vitality, Spirit, Strength, Guard, Agility, Movement, Intellect, Wisdom, Skill, Luck, Moves, Items, Points, status)
+                Display("Insert Fight Here")
 
-            if Player.x == goalX and Player.y == goalY:
+            if self.myPlayer.x == goalX and self.myPlayer.y == goalY:
                 Display(self.myPlayer.name + " reached the objective. Congratulations, you won!\nTurns: " + str(turns))
                 sys.exit()
 
