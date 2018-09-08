@@ -14,8 +14,6 @@ auth.set_access_token(access_token, access_token_secret)
 auth.secure = True
 api = tweepy.API(auth)
 
-battling = 0 
-
 duplicateprevention = "\n(DP:" + str(randint(1, 10000)) + ")"
 def DuplicatePrevention():
         duplicateprevention = "\n(DP:" + str(randint(1, 10000)) + ")"
@@ -36,11 +34,11 @@ class Player():
         self.speed = speed
 
 class Enemy():
-    def __init__(self):
-        self.health = 100
-        self.attack = 10
-        self.defense = 10
-        self.speed = 10
+    def __init__(self, health = 100, attack = 10, defense = 10, speed = 10):
+        self.health = health
+        self.attack = attack
+        self.defense = defense
+        self.speed = speed
 
 goalX = randint(-100,100)
 goalY = randint(-100,100)
@@ -53,11 +51,28 @@ Display("[Tweep Quest is currently under development.]\n New adventure starting!
 class MyStreamListener(tweepy.StreamListener):
     #Class Values here
     myPlayer = Player()
+    myEnemy = None
+    battling = False
+
+    def fightnotify(self):
+        Display(self.myPlayer.name + " has encountered an enemy")
+
     def on_status(self, status):
-        turns =+ 1
-        moved = 0
         command = status.text
+        moved = 0
+        #Battling
+        if self.myEnemy != None:
+            self.battling = True
+
+        if self.battling == True:
+            if "attack" in command: playerchoice = 1
+            if "special" in command: playerchoice = 2
+            if "item" in command: playerchoice = 3
+            #Battling
+
+
         print("Recived:\n" + command + "\n")
+
         #Naming the hero
         if self.myPlayer.name == "Player":
             self.myPlayer.name = command[12:]
@@ -67,7 +82,7 @@ class MyStreamListener(tweepy.StreamListener):
             Display("The hero's name shall be " + self.myPlayer.name + "!" + goal_announce)
 
         #Command outside battle
-        elif self.myPlayer.name != "Blank" and battling == 0:
+        elif self.myPlayer.name != "Blank" and self.battling == 0:
             splitcommand = command.split(" ")
             if "improve" in command:
                 amount = 0
@@ -100,16 +115,13 @@ class MyStreamListener(tweepy.StreamListener):
             #Encountering enemies
             battlechance = 1 #randint(1, 3)
             if battlechance == 1 and moved == 1:
-                Display("Insert Fight Here")
+                self.myEnemy = Enemy(health=randint(100, 500))
+                self.fightnotify()
 
             if self.myPlayer.x == goalX and self.myPlayer.y == goalY:
-                Display(self.myPlayer.name + " reached the objective. Congratulations, you won!\nTurns: " + str(turns))
+                Display(self.myPlayer.name + " reached the objective. Congratulations, you won!")
                 sys.exit()
 
-        elif self.myPlayer.name != "Blank" and battling == 1:
-            if "attack" in command: playerchoice = 1
-            if "special" in command: playerchoice = 2
-            if "item" in command: playerchoice = 3
 
 
 myStreamListener = MyStreamListener()
