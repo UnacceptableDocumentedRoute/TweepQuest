@@ -55,7 +55,7 @@ class MyStreamListener(tweepy.StreamListener):
     battling = False
 
     def fightnotify(self):
-        Display(self.myPlayer.name + " has encountered an enemy")
+        Display(self.myPlayer.name + " has encountered an enemy!")
 
     def on_status(self, status):
         command = status.text
@@ -68,7 +68,11 @@ class MyStreamListener(tweepy.StreamListener):
             if "attack" in command: playerchoice = 1
             if "special" in command: playerchoice = 2
             if "item" in command: playerchoice = 3
-            #Battling
+        battleturn = randint(1, self.myEnemy.speed + self.)
+        #Player Turn
+
+
+        #Battling
 
 
         print("Recived:\n" + command + "\n")
