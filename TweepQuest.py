@@ -60,16 +60,28 @@ class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
         command = status.text
         moved = 0
-        #Battling
-        if self.myEnemy != None:
+        #Intialize Battling
+        if self.myEnemy != None and self.battling == False:
             self.battling = True
+            playerhealth = self.myPlayer.health
+            playerattack = self.myPlayer.attack
+            playerdefense = self.myPlayer.defense
+            playerspeed = self.myPlayer.speed
+
+            enemyhealth = self.myEnemy.health
+            enemyattack = self.myEnemy.attack
+            enemydefense = self.myEnemy.defense
+            enemyspeed = self.myEnemy.speed
+
+        #Battling
 
         if self.battling == True:
             if "attack" in command: playerchoice = 1
             if "special" in command: playerchoice = 2
             if "item" in command: playerchoice = 3
-        battleturn = randint(1, self.myEnemy.speed + self.)
-        #Player Turn
+            battleturn = randint(1, playerspeed + enemyspeed)
+            if battleturn <= playerspeed:
+                print("Player Turn here")
 
 
         #Battling
