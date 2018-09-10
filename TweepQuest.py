@@ -81,14 +81,14 @@ class MyStreamListener(tweepy.StreamListener):
             if "item" in command: playerchoice = 3
             if "attack" in command:
                 damage = playerattack - (enemydefense/2)
-                enemyhealth =- damage
+                enemyhealth -= damage
                 Display(self.myPlayer.name + " attacks! " + str(damage) + " damage to the enemy!")
 
         def enemyTurn():
             enemymove = 1
             if enemymove == 1:
                 damage = enemyattack - (playerdefense/2)
-                playerhealth =- damage
+                playerhealth -= damage
                 Display("Enemy attacks! " + str(damage) + " damage to " + self.myPlayer.name + "!\nCurrent health: " + str(playerhealth))
 
         if self.battling == True:
