@@ -60,6 +60,8 @@ class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
         command = status.text
         moved = 0
+        print("Recived:\n" + command + "\n")
+
         #Intialize Battling
         if self.myEnemy != None and self.battling == False:
             self.battling = True
@@ -74,20 +76,34 @@ class MyStreamListener(tweepy.StreamListener):
             enemyspeed = self.myEnemy.speed
 
         #Battling
+        def playerTurn():
+            if "special" in command: playerchoice = 2
+            if "item" in command: playerchoice = 3
+            if "attack" in command:
+                damage = playerattack - (enemydefense/2)
+                enemyhealth =- damage
+                Display(self.myPlayer.name + " attacks! " + str(damage) + " damage to the enemy!")
+
+        def enemyTurn():
+            enemymove = 1
+            if enemymove == 1:
+                damage = enemyattack - (playerdefense/2)
+                playerhealth =- damage
+                Display("Enemy attacks! " + str(damage) + " damage to " + self.myPlayer.name + "!\nCurrent health: " + str(playerhealth))
 
         if self.battling == True:
-            if "attack" in command: playerchoice = 1
             if "special" in command: playerchoice = 2
             if "item" in command: playerchoice = 3
             battleturn = randint(1, playerspeed + enemyspeed)
             if battleturn <= playerspeed:
-                print("Player Turn here")
+                playerTurn()
+                enemyTurn()
 
+            elif battleturn > playerspeed:
+                enemyTurn()
+                playerTurn()
 
         #Battling
-
-
-        print("Recived:\n" + command + "\n")
 
         #Naming the hero
         if self.myPlayer.name == "Player":
@@ -131,7 +147,7 @@ class MyStreamListener(tweepy.StreamListener):
             #Encountering enemies
             battlechance = 1 #randint(1, 3)
             if battlechance == 1 and moved == 1:
-                self.myEnemy = Enemy(health=randint(100, 500))
+                self.myEnemy = Enemy(health=randint(100, 200))
                 self.fightnotify()
 
             if self.myPlayer.x == goalX and self.myPlayer.y == goalY:

@@ -1,12 +1,10 @@
 To-Do:
-TweepQuest Authentication Code Error
+5 damage attack puts health at -5 rather than 95
 
-Why can't the Player class work in myStreamListener?
+Make password strings private on GitHub
 
 Battles should stop when waiting for a player's input (As long as the player is not paralyzed, enraged, frozen,
 or confused)
-
-Fix improvement system
 
 Transfer changes like enemies, moves, condition effects, and items when the new versions of Tweep Quest are
 usable
