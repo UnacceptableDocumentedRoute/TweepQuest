@@ -69,13 +69,16 @@ class MyStreamListener(tweepy.StreamListener):
         #Intialize Battling
         if self.myEnemy != None and self.battling == False:
             self.battling = True
+            enemybase = Enemy()
+            enemystate = copy.copy(enemybase)
+
             self.playerstate.health = self.playerbase.health
             self.playerstate.attack = self.playerbase.attack
             self.playerstate.defense = self.playerbase.defense
             self.playerstate.speed = self.playerbase.speed
 
             enemystate.health = self.myEnemy.health
-            enemyattack = self.myEnemy.attack
+            enemystate.attack = self.myEnemy.attack
             enemydefense = self.myEnemy.defense
             enemyspeed = self.myEnemy.speed
 
@@ -152,8 +155,6 @@ class MyStreamListener(tweepy.StreamListener):
             battlechance = 1 #randint(1, 3)
             if battlechance == 1 and moved == 1:
                 self.myEnemy = Enemy(health=randint(100, 200))
-                enemybase = Enemy()
-                enemystate = copy.copy(enemybase)
                 self.fightnotify()
 
             if self.myPlayer.x == goalX and self.myPlayer.y == goalY:
