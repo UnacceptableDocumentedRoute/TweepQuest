@@ -1,5 +1,5 @@
 To-Do:
-How can temporary changes to values (health, speed, attack, defense) be kept for each turn?
+line 104: referenced before assignment
 
 Make password strings private on GitHub
 
@@ -18,7 +18,6 @@ Make a Move Guide
 
 Questions:
 Why can't the 'improve' section use variables like Vitality or Spirit?
-Should I put this on GitHub? How do I remove the auth codes?
 Should attacks really be doing that little damage?
 Is there a more efficient way to process commands for different results? (Around Line 25)
 How do I change the duplicate prevention number in real time?

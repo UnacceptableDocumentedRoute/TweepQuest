@@ -87,26 +87,26 @@ class MyStreamListener(tweepy.StreamListener):
             if "special" in command: playerchoice = 2
             if "item" in command: playerchoice = 3
             if "attack" in command:
-                damage = playerstate.attack - (enemystate.defense/2)
+                damage = self.playerstate.attack - (enemystate.defense/2)
                 enemystate.health -= damage
                 Display(self.myPlayer.name + " attacks! " + str(damage) + " damage to the enemy!")
 
-        def enemyTurn():
+        def enemyTurn(enemystate):
             enemymove = 1
             if enemymove == 1:
-                damage = enemyattack - (playerdefense/2)
+                damage = enemystate.attack - (self.playerstate.defense/2)
                 self.playerstate.health -= damage
-                Display("Enemy attacks! " + str(damage) + " damage to " + self.myPlayer.name + "!\nCurrent health: " + str(playerhealth))
+                Display("Enemy attacks! " + str(damage) + " damage to " + self.myPlayer.name + "!\nCurrent health: " + str(self.playerstate.health) + "/" + str(self.playerbase.health))
 
         if self.battling == True:
             if "special" in command: playerchoice = 2
             if "item" in command: playerchoice = 3
-            battleturn = randint(1, playerspeed + enemyspeed)
-            if battleturn <= playerspeed:
+            battleturn = randint(1, self.playerstate.speed + enemystate.speed)
+            if battleturn <= self.playerstate.speed:
                 playerTurn()
                 enemyTurn()
 
-            elif battleturn > playerspeed:
+            elif battleturn > self.playerstate.speed:
                 enemyTurn()
                 playerTurn()
 
