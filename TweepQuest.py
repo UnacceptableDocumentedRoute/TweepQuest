@@ -1,5 +1,6 @@
 import tweepy
 import sys
+import copy
 from random import randint
 from time import sleep
 
@@ -51,6 +52,9 @@ Display("[Tweep Quest is currently under development.]\n New adventure starting!
 class MyStreamListener(tweepy.StreamListener):
     #Class Values here
     myPlayer = Player()
+    playerbase = Player()
+    playerstate = copy.copy(playerbase)
+
     myEnemy = None
     battling = False
 
@@ -65,12 +69,12 @@ class MyStreamListener(tweepy.StreamListener):
         #Intialize Battling
         if self.myEnemy != None and self.battling == False:
             self.battling = True
-            playerhealth = self.myPlayer.health
-            playerattack = self.myPlayer.attack
-            playerdefense = self.myPlayer.defense
-            playerspeed = self.myPlayer.speed
+            self.playerstate.health = self.playerbase.health
+            self.playerstate.attack = self.playerbase.attack
+            self.playerstate.defense = self.playerbase.defense
+            self.playerstate.speed = self.playerbase.speed
 
-            enemyhealth = self.myEnemy.health
+            enemystate.health = self.myEnemy.health
             enemyattack = self.myEnemy.attack
             enemydefense = self.myEnemy.defense
             enemyspeed = self.myEnemy.speed
@@ -81,14 +85,14 @@ class MyStreamListener(tweepy.StreamListener):
             if "item" in command: playerchoice = 3
             if "attack" in command:
                 damage = playerattack - (enemydefense/2)
-                enemyhealth -= damage
+                enemystate.health -= damage
                 Display(self.myPlayer.name + " attacks! " + str(damage) + " damage to the enemy!")
 
         def enemyTurn():
             enemymove = 1
             if enemymove == 1:
                 damage = enemyattack - (playerdefense/2)
-                playerhealth -= damage
+                self.playerstate.health -= damage
                 Display("Enemy attacks! " + str(damage) + " damage to " + self.myPlayer.name + "!\nCurrent health: " + str(playerhealth))
 
         if self.battling == True:
@@ -148,6 +152,8 @@ class MyStreamListener(tweepy.StreamListener):
             battlechance = 1 #randint(1, 3)
             if battlechance == 1 and moved == 1:
                 self.myEnemy = Enemy(health=randint(100, 200))
+                enemybase = Enemy()
+                enemystate = copy.copy(enemybase)
                 self.fightnotify()
 
             if self.myPlayer.x == goalX and self.myPlayer.y == goalY:
