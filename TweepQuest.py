@@ -156,6 +156,7 @@ class MyStreamListener(tweepy.StreamListener):
                 Display(self.myPlayer.name + " reached the objective. Congratulations, you won!")
                 sys.exit()
 
+
         #Battling
     def playerTurn(self, command, enemystate):
         if "special" in command: playerchoice = 2
@@ -189,6 +190,12 @@ class MyStreamListener(tweepy.StreamListener):
         if self.playerstate.health <= 0:
             self.battleLose()
 
+    def descriptionUpdate(self):
+        print("filler")
+        #get description from account
+        #put string into variable
+        #modify description variable with regular expression
+        #send new string back to Twitter
 
 myStreamListener = MyStreamListener()
 myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)

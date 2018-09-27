@@ -1,12 +1,8 @@
 To-Do:
 add to battleWin(), battleLose(), and deathCheck() (cause of death, current turn)
 
-Make password strings private on GitHub
-
 Transfer changes like enemies, moves, condition effects, and items when the new versions of Tweep Quest are
 usable
-
-
 
 Have the bot change the description each time we win or lose.
 Skill and Luck are percentages
