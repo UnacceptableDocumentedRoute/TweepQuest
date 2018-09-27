@@ -1,5 +1,5 @@
 To-Do:
-line 104: referenced before assignment
+add to battleWin(), battleLose(), and deathCheck() (cause of death, current turn)
 
 Make password strings private on GitHub
 

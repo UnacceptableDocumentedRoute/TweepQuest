@@ -82,65 +82,60 @@ class MyStreamListener(tweepy.StreamListener):
             enemystate.defense = self.myEnemy.defense
             enemystate.speed = self.myEnemy.speed
 
-        #Battling
-        def playerTurn():
-            if "special" in command: playerchoice = 2
-            if "item" in command: playerchoice = 3
-            if "attack" in command:
-                damage = self.playerstate.attack - (enemystate.defense/2)
-                enemystate.health -= damage
-                Display(self.myPlayer.name + " attacks! " + str(damage) + " damage to the enemy!")
+            if self.battling == True:
+                if self.playerstate.speed == enemystate.speed:
+                    battleturn = randint(1, 2)
+                    if battleturn == 1:
+                        self.playerTurn(command, enemystate)
+                        self.enemyTurn(command, enemystate)
+                    elif battleturn == 2:
+                        self.enemyTurn(command, enemystate)
+                        self.playerTurn(command, enemystate)
 
-        def enemyTurn(enemystate):
-            enemymove = 1
-            if enemymove == 1:
-                damage = enemystate.attack - (self.playerstate.defense/2)
-                self.playerstate.health -= damage
-                Display("Enemy attacks! " + str(damage) + " damage to " + self.myPlayer.name + "!\nCurrent health: " + str(self.playerstate.health) + "/" + str(self.playerbase.health))
+                elif self.playerstate.speed > enemystate.speed:
+                    self.playerTurn(command, enemystate)
+                    self.enemyTurn(command, enemystate)
 
-        if self.battling == True:
-            if "special" in command: playerchoice = 2
-            if "item" in command: playerchoice = 3
-            battleturn = randint(1, self.playerstate.speed + enemystate.speed)
-            if battleturn <= self.playerstate.speed:
-                playerTurn()
-                enemyTurn()
+                elif self.playerstate.speed < enemystate.speed:
+                    self.enemyTurn(command, enemystate)
+                    self.playerTurn(command, enemystate)
+                    #Battling end
 
-            elif battleturn > self.playerstate.speed:
-                enemyTurn()
-                playerTurn()
-
-        #Battling
-
-        #Naming the hero
+        # Naming the hero
         if self.myPlayer.name == "Player":
             self.myPlayer.name = command[12:]
             if len(self.myPlayer.name) > 20:
-                self.myPlayer.name =  self.myPlayer.name[:20]
-            #, in_reply_to_status_id = status.id?
+                self.myPlayer.name = self.myPlayer.name[:20]
+            # , in_reply_to_status_id = status.id?
             Display("The hero's name shall be " + self.myPlayer.name + "!" + goal_announce)
 
-        #Command outside battle
+        # Command outside battle
         elif self.myPlayer.name != "Blank" and self.battling == 0:
             splitcommand = command.split(" ")
             if "improve" in command:
                 amount = 0
                 if splitcommand[4] in splitcommand:
                     amount = splitcommand[4]
-        #        else:
-        #            amount = Points
-        #        if "Vitality" in command: Vitality += amount, Display(self.myPlayer.name + " allocated " + str(amount) + " Points into Vitality.")
-        #        if "Spirit" in command: Spirit += amount, Display(self.myPlayer.name + " allocated " + str(amount) + " Points into Spirit.")
-        #        Points -= amount
+            #        else:
+            #            amount = Points
+            #        if "Vitality" in command: Vitality += amount, Display(self.myPlayer.name + " allocated " + str(amount) + " Points into Vitality.")
+            #        if "Spirit" in command: Spirit += amount, Display(self.myPlayer.name + " allocated " + str(amount) + " Points into Spirit.")
+            #        Points -= amount
 
             elif splitcommand[2] in splitcommand and type(int(splitcommand[2])) == type(1):
                 steps = int(splitcommand[2])
                 if steps <= self.myPlayer.speed:
-                    if "right" in splitcommand[1]: self.myPlayer.x += steps
-                    elif "left" in splitcommand[1]: self.myPlayer.x -= steps
-                    elif "up" in splitcommand[1]: self.myPlayer.y += steps
-                    elif "down" in splitcommand[1]: self.myPlayer.y -= steps
-                    Display(self.myPlayer.name + " moved right " + str(steps) + " steps.\nCurrent position: (" + str(self.myPlayer.x) + "," + str(self.myPlayer.y) + ")")
+                    if "right" in splitcommand[1]:
+                        self.myPlayer.x += steps
+                    elif "left" in splitcommand[1]:
+                        self.myPlayer.x -= steps
+                    elif "up" in splitcommand[1]:
+                        self.myPlayer.y += steps
+                    elif "down" in splitcommand[1]:
+                        self.myPlayer.y -= steps
+                    Display(self.myPlayer.name + " moved right " + str(
+                        steps) + " steps.\nCurrent position: (" + str(self.myPlayer.x) + "," + str(
+                        self.myPlayer.y) + ")")
                     moved = 1
                 else:
                     Display("Not enough Movement for that distance!")
@@ -149,10 +144,10 @@ class MyStreamListener(tweepy.StreamListener):
                 Display("Invalid syntax. Please")
                 moved = 0
 
-            sleep(5)
+            sleep(1)
 
-            #Encountering enemies
-            battlechance = 1 #randint(1, 3)
+            # Encountering enemies
+            battlechance = 1  # randint(1, 3)
             if battlechance == 1 and moved == 1:
                 self.myEnemy = Enemy(health=randint(100, 200))
                 self.fightnotify()
@@ -161,6 +156,38 @@ class MyStreamListener(tweepy.StreamListener):
                 Display(self.myPlayer.name + " reached the objective. Congratulations, you won!")
                 sys.exit()
 
+        #Battling
+    def playerTurn(self, command, enemystate):
+        if "special" in command: playerchoice = 2
+        if "item" in command: playerchoice = 3
+        if "attack" in command:
+            damage = self.playerstate.attack - (enemystate.defense/2)
+            enemystate.health -= damage
+            Display(self.myPlayer.name + " attacks! " + str(damage) + " damage to the enemy!")
+        #keep deathCheck() at the end
+        self.deathCheck(enemystate)
+
+    def enemyTurn(self, command, enemystate):
+        enemymove = 1
+        if enemymove == 1:
+            damage = enemystate.attack - (self.playerstate.defense/2)
+            self.playerstate.health -= damage
+            Display("Enemy attacks! " + str(damage) + " damage to " + self.myPlayer.name + "!\nCurrent health: " + str(self.playerstate.health) + "/" + str(self.playerbase.health))
+        #keep deathCheck() at the end
+        self.deathCheck(enemystate)
+
+    def battleLose(self):
+        Display(self.myPlayer.name + " lost...")
+
+    def battleWin(self):
+        Display(self.myPlayer.name + " won the battle!")
+
+    def deathCheck(self, enemystate):
+        if enemystate.health <= 0:
+            self.battleWin()
+
+        if self.playerstate.health <= 0:
+            self.battleLose()
 
 
 myStreamListener = MyStreamListener()

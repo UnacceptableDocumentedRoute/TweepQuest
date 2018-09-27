@@ -104,4 +104,4 @@ venv.bak/
 .mypy_cache/
 
 # Ignore TweepQuest Keys
-TweepQuestKeys
+./TweepQuestKeys
