@@ -56,6 +56,9 @@ class MyStreamListener(tweepy.StreamListener):
     playerstate = copy.copy(playerbase)
 
     myEnemy = None
+    enemybase = Enemy()
+    enemystate = copy.copy(enemybase)
+
     battling = False
 
     def fightnotify(self):
@@ -69,37 +72,35 @@ class MyStreamListener(tweepy.StreamListener):
         #Intialize Battling
         if self.myEnemy != None and self.battling == False:
             self.battling = True
-            enemybase = Enemy()
-            enemystate = copy.copy(enemybase)
 
             self.playerstate.health = self.playerbase.health
             self.playerstate.attack = self.playerbase.attack
             self.playerstate.defense = self.playerbase.defense
             self.playerstate.speed = self.playerbase.speed
 
-            enemystate.health = self.myEnemy.health
-            enemystate.attack = self.myEnemy.attack
-            enemystate.defense = self.myEnemy.defense
-            enemystate.speed = self.myEnemy.speed
+            self.enemystate.health = self.myEnemy.health
+            self.enemystate.attack = self.myEnemy.attack
+            self.enemystate.defense = self.myEnemy.defense
+            self.enemystate.speed = self.myEnemy.speed
 
-            if self.battling == True:
-                if self.playerstate.speed == enemystate.speed:
-                    battleturn = randint(1, 2)
-                    if battleturn == 1:
-                        self.playerTurn(command, enemystate)
-                        self.enemyTurn(command, enemystate)
-                    elif battleturn == 2:
-                        self.enemyTurn(command, enemystate)
-                        self.playerTurn(command, enemystate)
+        if self.battling == True:
+            if self.playerstate.speed == self.enemystate.speed:
+                battleturn = randint(1, 2)
+                if battleturn == 1:
+                    self.playerTurn(command, self.enemystate)
+                    self.enemyTurn(command, self.enemystate)
+                elif battleturn == 2:
+                    self.enemyTurn(command, self.enemystate)
+                    self.playerTurn(command, self.enemystate)
 
-                elif self.playerstate.speed > enemystate.speed:
-                    self.playerTurn(command, enemystate)
-                    self.enemyTurn(command, enemystate)
+            elif self.playerstate.speed > self.enemystate.speed:
+                self.playerTurn(command, self.enemystate)
+                self.enemyTurn(command, self.enemystate)
 
-                elif self.playerstate.speed < enemystate.speed:
-                    self.enemyTurn(command, enemystate)
-                    self.playerTurn(command, enemystate)
-                    #Battling end
+            elif self.playerstate.speed < self.enemystate.speed:
+                self.enemyTurn(command, self.enemystate)
+                self.playerTurn(command, self.enemystate)
+                #Battling end
 
         # Naming the hero
         if self.myPlayer.name == "Player":
@@ -162,7 +163,7 @@ class MyStreamListener(tweepy.StreamListener):
         if "special" in command: playerchoice = 2
         if "item" in command: playerchoice = 3
         if "attack" in command:
-            damage = self.playerstate.attack - (enemystate.defense/2)
+            damage = self.playerstate.attack - ((enemystate.defense/100) * self.playerstate.attack)
             enemystate.health -= damage
             Display(self.myPlayer.name + " attacks! " + str(damage) + " damage to the enemy!")
         #keep deathCheck() at the end
