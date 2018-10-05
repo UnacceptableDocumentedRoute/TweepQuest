@@ -1,7 +1,9 @@
 import tweepy
 import sys
 import copy
+from math import ceil
 from random import randint
+from random import choice
 from time import sleep
 
 fp = open("TweepQuestKeys", "r")
@@ -35,11 +37,18 @@ class Player():
         self.speed = speed
 
 class Enemy():
-    def __init__(self, health = 100, attack = 10, defense = 10, speed = 10):
-        self.health = health
-        self.attack = attack
-        self.defense = defense
-        self.speed = speed
+    def __init__(self, currentenemy=None):
+        if currentenemy ==None:
+            self.health = 100
+            self.attack = 10
+            self.defense = 10
+            self.speed = 10
+
+        else:
+            self.health = currentenemy['health']
+            self.attack = currentenemy['attack']
+            self.defense = currentenemy['defense']
+            self.speed = currentenemy['speed']
 
 goalX = randint(-100,100)
 goalY = randint(-100,100)
@@ -56,8 +65,9 @@ class MyStreamListener(tweepy.StreamListener):
     playerstate = copy.copy(playerbase)
 
     myEnemy = None
-    enemybase = Enemy()
-    enemystate = copy.copy(enemybase)
+    enemystate = None
+    enemylist = [{'name': "Enemy1", 'health':150, 'attack': 20, 'defense': 10, 'speed': 5},
+                 {'name': "Enemy2", 'health':100, 'attack': 10, 'defense': 15, 'speed': 15}]
 
     battling = False
 
@@ -150,7 +160,9 @@ class MyStreamListener(tweepy.StreamListener):
             # Encountering enemies
             battlechance = 1  # randint(1, 3)
             if battlechance == 1 and moved == 1:
-                self.myEnemy = Enemy(health=randint(100, 200))
+                currentenemy = choice(self.enemylist)
+                self.myEnemy = Enemy(currentenemy)
+                self.enemystate = copy.copy(self.myEnemy)
                 self.fightnotify()
 
             if self.myPlayer.x == goalX and self.myPlayer.y == goalY:
@@ -163,16 +175,16 @@ class MyStreamListener(tweepy.StreamListener):
         if "special" in command: playerchoice = 2
         if "item" in command: playerchoice = 3
         if "attack" in command:
-            damage = self.playerstate.attack - ((enemystate.defense/100) * self.playerstate.attack)
+            damage = ceil(self.playerstate.attack - ((enemystate.defense/100) * self.playerstate.attack))
             enemystate.health -= damage
-            Display(self.myPlayer.name + " attacks! " + str(damage) + " damage to the enemy!")
+            Display(self.myPlayer.name + " attacks! " + str(damage) + " damage to the enemy! Enemy Health: %s / %s"%(self.enemystate.health, self.myEnemy.health))
         #keep deathCheck() at the end
         self.deathCheck(enemystate)
 
     def enemyTurn(self, command, enemystate):
         enemymove = 1
         if enemymove == 1:
-            damage = enemystate.attack - (self.playerstate.defense/2)
+            damage = ceil(enemystate.attack - (self.playerstate.defense/2))
             self.playerstate.health -= damage
             Display("Enemy attacks! " + str(damage) + " damage to " + self.myPlayer.name + "!\nCurrent health: " + str(self.playerstate.health) + "/" + str(self.playerbase.health))
         #keep deathCheck() at the end
