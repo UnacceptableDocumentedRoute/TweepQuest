@@ -1,4 +1,14 @@
 To-Do:
+Goal: get currentenemy variables into enemyturn()
+Changed currentenemy to a class list
+removed None from
+    class Enemy():
+        def __init__(self, currentenemy==None):
+because otherwise it would just give the default stats (line 41)
+
+but then I get:
+    TypeError: 'NoneType' object is not subscriptable
+
 add to battleWin(), battleLose(), and deathCheck() (cause of death, current turn)
 
 Transfer changes like enemies, moves, condition effects, and items when the new versions of Tweep Quest are
