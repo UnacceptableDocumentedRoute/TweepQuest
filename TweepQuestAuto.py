@@ -27,12 +27,8 @@ def Display(tweetandprint):
     print(str(tweetandprint + DuplicatePrevention()))
 
 class Player():
-    def __init__(self, name="Player", x=0, y=0, health=100, attack=10, defense=10, speed=10):
+    def __init__(self, name="Player", x=0, y=0):
         self.x = x
         self.y = y
         self.name = name
-        self.max_health = health
-        self.health = health
-        self.attack = attack
-        self.defense = defense
-        self.speed = speed
+        tiles_explored = []
